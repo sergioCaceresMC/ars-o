@@ -1,6 +1,9 @@
 import os
 from jinja2 import Template
 
+import p_general.interprete as it
+
+
 #Ruta base relativa a pfinal2.py
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
@@ -9,6 +12,8 @@ RUTA_HAPROXY_CONF = os.path.join(BASE_DIR, "transferencias", "haproxy.cfg.j2")
 RUTA_HAPROXY_CONF_PUSH = os.path.join(BASE_DIR, "transferencias", "haproxy.cfg")
 RUTA_HAPROXY_HOST = os.path.join(BASE_DIR, "transferencias", "hosts.j2")
 RUTA_HAPROXY_HOST_PUSH = os.path.join(BASE_DIR, "transferencias", "hosts")
+RUTA_NODE_INSTALL = os.path.join(BASE_DIR, "transferencias", "install.sh")
+RUTA_APP = os.path.join(BASE_DIR, "transferencias", "app.tar.gz")
 
 
 
@@ -45,6 +50,10 @@ def modify_haproxy_docs(servidores):
     #Guardar archivo final
     with open(RUTA_HAPROXY_HOST_PUSH, "w") as f:
         f.write(config)
+
+#Envia los archivos al contenedor que actua como balanceador
+def push_to_lb():
+    pass
 
 '''
 if __name__ == "__main__":

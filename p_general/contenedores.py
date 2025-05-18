@@ -44,6 +44,9 @@ def verificar_alias(alias,
     # Solución 1: Fuerza bruta
     
     if finger in data.keys(): return data.get(finger)
+    
+    #Solución situacional
+    if alias in data.values(): return alias
 
     # Solución 2: Fuerza bruta pero solo si es necesario  
     

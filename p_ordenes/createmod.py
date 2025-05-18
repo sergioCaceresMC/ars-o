@@ -18,7 +18,7 @@ def create(n_servs=2, ip_header="134.3"):
     try:
         # Creamos los contenedores
         logging.info("creando s")
-        ct.crear_varios_cont(name="s",num=n_servs, init=False)
+        ct.crear_varios_cont(name="s",num=n_servs, init=False, alias="servidorBaseImgSJ2025", finger="null2025")
         
         # Creamos el balanceador
         logging.info("creando balanceador")
