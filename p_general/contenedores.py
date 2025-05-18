@@ -1,11 +1,27 @@
+import os
 import logging
 import subprocess
-import time
 
 import p_general.interprete as it
 import p_general.memoria as sv
 
 logging.basicConfig(level=logging.DEBUG)
+
+
+#Ruta base relativa a pfinal2.py
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+#Ruta a los archivos dentro de la carpetea imágenes
+RUTA_SERVIDORES = os.path.join(BASE_DIR, "imgs", "fichero.trg")
+RUTA_BALANCEADOR = os.path.join(BASE_DIR, "imgs", "fichero.trg")
+RUTA_DATABASE = os.path.join(BASE_DIR, "imgs", "fichero.trg")
+
+#función que permite usar las rutas
+def get_ruta(ruta):
+    if ruta == "sv": return RUTA_SERVIDORES
+    elif ruta == "lb": return RUTA_BALANCEADOR
+    elif ruta == "db": return RUTA_DATABASE
+    else: return "/mnt/vnx/repo/arso/ubuntu2004.tar.gz"
 
 #Verificamos si el alias de la imagen es correcto.
 #Devuelve el valor del alias correcto
