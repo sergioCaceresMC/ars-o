@@ -67,6 +67,13 @@ def delete(sv_name=None):
         #Borrar el balanceador de carga
         ct.delete_contenedor("lb")
 
+        #Borrar la base de datos
+        ct.delete_contenedor("db")
+        #Borrar la base de datos
+        ct.delete_contenedor("contTemporal")
+        #Borrar la base de datos
+        ct.delete_contenedor("contTemporal2")
+
         # Borra los bridges
         conf.delete_network("lxdbr1")
 

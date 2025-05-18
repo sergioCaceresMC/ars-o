@@ -7,11 +7,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import p_general.contenedores as ct
 import p_general.configuraciones as conf
 import p_general.cache as cache
+import p_general.instalaciones as ins
 
 import p_ordenes.deletemod as ord_del
 import p_ordenes.stopmod as ord_sto
 
 def create(n_servs=2, ip_header="134.3"):
+
+    # creamos la imagen de los servidores 
+    ins.create_img_servers(name="servidorBaseImgSJ2025")
+
     # Genera el archivo de cache 
     cache.guardar_cache(data=str(n_servs))
     
@@ -56,6 +61,11 @@ def create(n_servs=2, ip_header="134.3"):
 
         logging.info("configurando YAML balanceador")
         conf.configurar_yaml_por_sustitucion("lb",eth=["eth0","eth1"])
+
+        #creamos base de datos
+        ct.crear_cont("db", init= False)
+        conf.configurar_comunicacion(contenedor="db",eth="eth0",lxdbr="lxdbr0",address="134.3.0.20",init=True)
+        ins.instalar_mongo("db")
 
         ord_sto.stop()
         logging.info("Ecosistema creado con éxito. Ejecute start para iniciarlo.")

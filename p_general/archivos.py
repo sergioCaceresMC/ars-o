@@ -13,7 +13,7 @@ RUTA_HAPROXY_CONF_PUSH = os.path.join(BASE_DIR, "transferencias", "haproxy.cfg")
 RUTA_HAPROXY_HOST = os.path.join(BASE_DIR, "transferencias", "hosts.j2")
 RUTA_HAPROXY_HOST_PUSH = os.path.join(BASE_DIR, "transferencias", "hosts")
 RUTA_NODE_INSTALL = os.path.join(BASE_DIR, "transferencias", "install.sh")
-RUTA_APP = os.path.join(BASE_DIR, "transferencias", "app.tar.gz")
+RUTA_APP = os.path.join(BASE_DIR, "transferencias", "app")
 
 
 
