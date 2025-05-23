@@ -103,8 +103,6 @@ def create_img_servers(name = "servidorBaseImgSJ2025", force = False):
             alias_encontrado, fingerprint = columnas[0], columnas[1]
             data[fingerprint] = alias_encontrado
 
-    #Si la imágen existe o estamos en modo forzado, 
-    #vamos a borrar las imágenes y crearemos la imagen correspondiente
     if force:
         for imagen in data.keys():
             it.ejecutar_str(f"lxc image delete {imagen}")
@@ -113,15 +111,8 @@ def create_img_servers(name = "servidorBaseImgSJ2025", force = False):
     conf.crear_bridge(lxdbr="lxdbr0", ipv4address=f"134.3.0.1")
     
     ct.crear_cont("contTemporal", init= False)
-   # ct.crear_cont("db", init= False)
     
     conf.configurar_comunicacion(contenedor="contTemporal",eth="eth0",lxdbr="lxdbr0",address="134.3.0.11",init=True)
-   # conf.configurar_comunicacion(contenedor="db",eth="eth0",lxdbr="lxdbr0",address="134.3.0.20",init=True)
-    
-   # instalar_mongo("db")
-    instalar_node("contTemporal")
-    it.ejecutar_str("lxc exec contTemporal -- forever start app/rest_server.js") #<--- Esta línea da un error o al menos no funciona
-    crear_imagen_de_cont("contTemporal")
 
 if __name__ == "__main__":
     transferir_archivos_proxy("lb")
