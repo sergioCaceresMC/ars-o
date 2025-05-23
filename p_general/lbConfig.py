@@ -18,9 +18,9 @@ RUTA_HAPROXY_CONF = os.path.join(BASE_DIR, "transferencias", "haproxy.cfg.j2")
 RUTA_HAPROXY_CONF_PUSH = os.path.join(BASE_DIR, "transferencias", "haproxy.cfg")
 RUTA_HAPROXY_HOST = os.path.join(BASE_DIR, "transferencias", "hosts.j2")
 RUTA_HAPROXY_HOST_PUSH = os.path.join(BASE_DIR, "transferencias", "hosts")
-RUTA_NODE_INSTALL = os.path.join(BASE_DIR, "transferencias", "install.sh")
-RUTA_APP = os.path.join(BASE_DIR, "transferencias", "app")
 
+#servidores variable temporal
+SERVIDORES = []
 
 #insatala haproxy en el balanceador
 def instalar_proxy(sv):
@@ -32,6 +32,7 @@ def instalar_proxy(sv):
     
     logging.info("configurando haproxy")
     push_to_lb(sv)
+
 '''
 #Prueba
 servidores = [
@@ -40,6 +41,8 @@ servidores = [
     {"mv_name": "s3", "name": "webserver3", "ip": "10.0.0.13", "port": 8001},
 ]
 '''
+def add_servers(mv_name, webserver_name, ip, port):
+    SERVIDORES.append({"mv_name": mv_name, "name": webserver_name, "ip": ip, "port": port})
 
 def modify_haproxy_docs(servidores):
     #====== Crear el hproxy ==========#
@@ -78,4 +81,5 @@ def push_to_lb(sv):
 
 
 if __name__ == "__main__":
+
     instalar_proxy("lb")
