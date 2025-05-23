@@ -4,7 +4,6 @@ import subprocess
 import logging
 import time
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import p_general.interprete as it
 import p_general.memoria as mem
 import p_general.contenedores as ct
@@ -47,6 +46,8 @@ def instalar_node(sv):
 def crear_imagen_de_cont(sv, name = "servidorBaseImgSJ2025"):
     ct.detener_contenedor(sv)
     it.ejecutar_str(f"lxc publish {sv} --alias {name}")
+    time.sleep(2)
+    ct.delete_contenedor("contTemporal")
 
 #Crear la imagen base del servidor
 def create_img_servers(name = "servidorBaseImgSJ2025", force = False):
@@ -72,8 +73,13 @@ def create_img_servers(name = "servidorBaseImgSJ2025", force = False):
     ct.delete_contenedor("contTemporal")
     ct.crear_cont("contTemporal", init= True)
     instalar_node("contTemporal")
-    crear_imagen_de_cont("contTemporal")
+    crear_imagen_de_cont(sv="contTemporal", name=name)
+
+def iniciar_server(sv):
+    it.ejecutar_popen("")
 
 
+'''
 if __name__ == "__main__":
-    pass
+    create_img_servers()
+'''

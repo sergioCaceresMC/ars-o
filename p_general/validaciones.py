@@ -2,7 +2,7 @@ import sys
 import logging
 
 #Ordenes de entrada definidas:
-list_args = ["create","start","list","delete","stop","add","help","repair"]
+list_args = ["create","start","list","delete","stop","add","help","repair","config"]
 
 #Comprobamos que el valor de la orden introducida sea correcto
 def validate_p1_input(argum):
@@ -125,6 +125,15 @@ def validate_help(argum):
             f'''
             Numero incorrecto de parametros. Se han introducido {len(argum)}
             parametros, y help solo soporta 2.
+            '''
+        )
+
+def validate_config(argum):
+    if len(argum) != 2:
+        raise ValueError(
+            f'''
+            Numero incorrecto de parametros. Se han introducido {len(argum)}
+            parametros, y config solo soporta 2.
             '''
         )
 

@@ -7,31 +7,32 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import p_general.contenedores as ct
 import p_general.configuraciones as conf
 import p_general.cache as cache
-import p_general.instalaciones as ins
 
 import p_ordenes.deletemod as ord_del
 import p_ordenes.stopmod as ord_sto
 
 def create(n_servs=2, ip_header="134.3"):
-
-    # creamos la imagen de los servidores 
-    ins.create_img_servers(name="servidorBaseImgSJ2025")
-
     # Genera el archivo de cache 
     cache.guardar_cache(data=str(n_servs))
     
     try:
         # Creamos los contenedores
         logging.info("creando s")
-        ct.crear_varios_cont(name="s",num=n_servs, init=False, alias="servidorBaseImgSJ2025", finger="null2025")
+        ct.crear_varios_cont(name="s",num=n_servs, init=False, 
+                             alias="servidorBaseImgSJ2025", 
+                             finger="7b17617fc8e1113c40b535ddfcaa8812bcb25b5baafb57b922499d2483ebdeb4")
         
         # Creamos el balanceador
         logging.info("creando balanceador")
         ct.crear_cont(name="lb", init=False)
-        
+
         # Creamos el cliente
         logging.info("creando cl")
         ct.crear_cont(name="cl", init=False)
+
+        # Creamos base de datos
+        logging.info("creando db")
+        ct.crear_cont(name="db", init=False)
         
         # Crear el lxdbr0
         logging.info("creando lxdbr0")
@@ -56,18 +57,15 @@ def create(n_servs=2, ip_header="134.3"):
         logging.info("configurando balanceador")
         conf.configurar_comunicacion(contenedor="lb",address=f"{ip_header}.0.10", eth="eth0", lxdbr="lxdbr0", init=False)
         conf.configurar_comunicacion(contenedor="lb",address=f"{ip_header}.1.10", eth="eth1", lxdbr="lxdbr1")
+        
+        # Configurar base de datos
+        conf.configurar_comunicacion(contenedor="db",eth="eth0",lxdbr="lxdbr0",address=f"{ip_header}.0.20",init=False)
 
-        time.sleep(5) # Por algún motivo sin esta pausa no funciona 
+        time.sleep(2) # Por algún motivo sin esta pausa no funciona 
 
-        logging.info("configurando YAML balanceador")
+        logging.debug("configurando YAML balanceador")
         conf.configurar_yaml_por_sustitucion("lb",eth=["eth0","eth1"])
 
-        #creamos base de datos
-        ct.crear_cont("db", init= False)
-        conf.configurar_comunicacion(contenedor="db",eth="eth0",lxdbr="lxdbr0",address="134.3.0.20",init=True)
-        ins.instalar_mongo("db")
-
-        ord_sto.stop()
         logging.info("Ecosistema creado con éxito. Ejecute start para iniciarlo.")
 
 

@@ -8,6 +8,4 @@ ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 ff02::3 ip6-allhosts
 
-10.0.0.211 s1
-10.0.0.12 s2
-10.0.0.20 db
+134.3.0.11 s1

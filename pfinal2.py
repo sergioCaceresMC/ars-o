@@ -12,6 +12,7 @@ from p_ordenes.listmod import lista_info
 from p_ordenes.helpmod import get_help
 from p_ordenes.repairmod import repair
 from p_ordenes.addmod import add
+from p_ordenes.configmod import configurar
 
 from p_general import validaciones as val
 
@@ -125,6 +126,13 @@ def main():
             add(numero = serv_name)
         else:
             add()
+    elif orden == "config":
+        try:
+            val.validate_config(l)
+        except ValueError as e:
+            print(f"Error durante la validación: {e}")
+            sys.exit(1)
+        configurar()
 
 if __name__ == "__main__":
     main()

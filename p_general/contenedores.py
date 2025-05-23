@@ -4,6 +4,7 @@ import subprocess
 
 import p_general.interprete as it
 import p_general.memoria as sv
+import p_general.svConfig as svconf
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -43,14 +44,22 @@ def verificar_alias(alias,
 
     # Solución 1: Fuerza bruta
     
-    if finger in data.keys(): return data.get(finger)
+    if finger in data.keys(): 
+        print(data.get(finger))
+        return data.get(finger)
     
     #Solución situacional
-    if alias in data.values(): return alias
+    if alias in data.values(): 
+        print(alias)
+        return alias
 
     # Solución 2: Fuerza bruta pero solo si es necesario  
     
     if alias not in data.values():
+        if alias == "servidorBaseImgSJ2025":
+            #Caso de querer crear la imagen de los servidores
+            svconf.create_img_servers()
+            return alias
         try:
             it.ejecutar_str(f"lxc image import {impo} --alias {alias}", 
                             capture=True, 
