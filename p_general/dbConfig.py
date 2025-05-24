@@ -1,7 +1,8 @@
 import subprocess
 import logging
 import sys
-import os 
+import os
+import time
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import p_general.interprete as it
@@ -29,8 +30,32 @@ def instal_mongoDB():
     #it.ejecutar_str(f"lxc exec db -- bash -c 'sed -i 's/^bind_ip = 127.0.0.1/bind_ip = 127.0.0.1,134.3.0.20/' /etc/mongodb.conf'")# ESTA LÑINEA DA ERROR X UNEXPECTED EOF Y UNEXPECTED END OF FILE  
     it.ejecutar_str(f"lxc restart db")
 
-'''
+# espera a que el contenedor tenga red para poder hacer el install bien, si no da error
+def wait_network(ct_name, timeout=60, interval=3):
+    init_time = time.time()
+    while True:
+        try:
+            result = subprocess.run(
+                ["lxc", "exec", ct_name, "--", "ping", "-c", "1", "-W", "1", "8.8.8.8"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True
+            )
+            net_result = result.stdout or ""
+        except Exception as e:
+            net_result = ""
+
+        if "1 received" in net_result or "bytes from" in net_result:
+            return True
+
+        if time.time() - init_time > timeout:
+            return False
+
+        time.sleep(interval)
+
+
 if __name__ == "__main__":
-    #instal_mongoDB()
-    ct.iniciar_contenedor("db")
-'''
+    crear_db()
+    wait_network("db")
+    instal_mongoDB()
+
