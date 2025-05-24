@@ -10,5 +10,7 @@ import p_general.svConfig as svconf
 import p_general.dbConfig as dbconf
 
 def configurar():
+    dbconf.crear_db()
+    dbconf.wait_network("db")
     dbconf.instal_mongoDB()
     lbconf.instalar_proxy("lb")
